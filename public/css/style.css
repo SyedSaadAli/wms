@@ -1,0 +1,54 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+.jumbotron {
+    background-image: url('../images/banner.jpg');
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 150px 0;
+    margin-bottom: 0;
+}
+.jumbotron h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+.section {
+    padding: 60px 0;
+}
+.section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.feature {
+    text-align: center;
+    padding: 30px;
+}
+.feature i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #e91e63;
+}
+.img-fluid {
+    border-radius: 8px;
+}
+.nav-link{
+    color: #333;
+}
+.nav-link:hover{
+    color: #e91e63;
+}
+
+
+.login-container {
+    max-width: 400px;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}

@@ -15,7 +15,7 @@ class DashboardController extends Controller
         if($role_id == 1 || $role_id == 2){
             return view('panel.dashboard');
         }else{
-        return view('home');
+        return redirect('/');
         }
     }
 }

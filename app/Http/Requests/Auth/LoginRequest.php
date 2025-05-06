@@ -50,7 +50,7 @@ class LoginRequest extends FormRequest
         }
 
         $user = Auth::user();
-        if ($user->role_id === 2 && $user->is_approved === 0) {
+        if ($user->role_id === 2 && $user->is_approved === '0') {
             Auth::logout();
             throw ValidationException::withMessages([
                 'email' => trans('Account not approved'),

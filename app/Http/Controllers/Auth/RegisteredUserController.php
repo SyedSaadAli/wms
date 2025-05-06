@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
@@ -41,9 +42,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
+            'is_approved' => 0, // Default to not approved
         ]);
 
         event(new Registered($user));
+        // Check if the user is a vendor and not approved
+        if ($user->role_id == 2 && $user->is_approved == '0') {
+            Auth::logout(); // Log out the user
+            return redirect()->route('login')->with('error', 'Your account is not approved yet. Please wait for admin approval.');
+        }
 
         Auth::login($user);
 

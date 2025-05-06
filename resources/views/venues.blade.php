@@ -76,7 +76,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $value->name }}</h5>
                         <p class="card-text">{{ \Illuminate\Support\Str::limit($value->description, 100, '...') }}</p>
-                        {{-- <a href="couple_venue_details.html" class="btn btn-primary">View Details</a> --}}
+                        <a href="{{ route('venue.details',$value->id) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

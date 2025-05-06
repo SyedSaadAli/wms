@@ -119,11 +119,61 @@
             </div>
         </div>
     </section>
+    @auth
+    <div id="chat-box" style="...">
+        <div id="messages">
+            <p>Sample message</p>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="message-input">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+      @endauth
+    @if(isset($showSurvey) && $showSurvey)
+    <!-- Survey Modal -->
+    <div class="modal fade" id="surveyModal" tabindex="-1" aria-labelledby="surveyModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form method="POST" action="{{ route('survey.submit') }}">
+          @csrf
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="surveyModalLabel">Tell us about your preferences</h5>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label>What kind of event are you planning?</label>
+                <input type="text" class="form-control" name="event_type" required>
+              </div>
+              <div class="mb-3">
+                <label>How many guests are you expecting?</label>
+                <input type="number" class="form-control" name="guest_capacity" required>
+              </div>
+              <div class="mb-3">
+                <label>Preferred ambience?</label>
+                <input type="text" class="form-control" name="ambience" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Wedding Management System</p>
     </footer>
-
+    <script>
+      window.onload = function () {
+        $('#surveyModal').modal('show');
+      };
+    </script>
+    @endif
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

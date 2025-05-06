@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\SurveyResponse;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'is_approved',
+        'survey',
     ];
 
     /**
@@ -57,4 +59,11 @@ class User extends Authenticatable
     {
         return User::all()->where('role_id', '=', 2)->sortByDesc('id');
     }
+
+    // app/Models/User.php
+    public function surveyResponse()
+    {
+        return $this->hasOne(SurveyResponse::class);
+    }
+
 }

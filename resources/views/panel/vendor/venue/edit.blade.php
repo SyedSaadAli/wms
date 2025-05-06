@@ -1,4 +1,3 @@
-
 @extends('panel.layouts.app')
 @section('content')
 
@@ -51,6 +50,35 @@
                             <label for="address" class="col-sm-12 col-form-label">Address</label>
                             <div class="col-sm-12">
                                 <textarea name="address" id="address" class="form-control">{{ $getRecord->address }}</textarea>
+                            </div>
+                        </div>
+                        <!-- New Fields -->
+                        <div class="col-md-6">
+                            <label for="event_type" class="col-sm-12 col-form-label">Event Type</label>
+                            <div class="col-sm-12">
+                                <select name="event_type" id="event_type" class="form-control">
+                                    <option value="Birthday Party" {{ $getRecord->event_type == 'Birthday Party' ? 'selected' : '' }}>Birthday Party</option>
+                                    <option value="Wedding" {{ $getRecord->event_type == 'Wedding' ? 'selected' : '' }}>Wedding</option>
+                                    <option value="Corporate Event" {{ $getRecord->event_type == 'Corporate Event' ? 'selected' : '' }}>Corporate Event</option>
+                                    <option value="Anniversary" {{ $getRecord->event_type == 'Anniversary' ? 'selected' : '' }}>Anniversary</option>
+                                    <option value="Other" {{ $getRecord->event_type == 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ambience" class="col-sm-12 col-form-label">Ambience</label>
+                            <div class="col-sm-12">
+                                <select name="ambience" id="ambience" class="form-control">
+                                    <option value="Luxury" {{ $getRecord->ambience == 'Luxury' ? 'selected' : '' }}>Luxury</option>
+                                    <option value="Classic" {{ $getRecord->ambience == 'Classic' ? 'selected' : '' }}>Classic</option>
+                                    <option value="Elegant" {{ $getRecord->ambience == 'Elegant' ? 'selected' : '' }}>Elegant</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="guest_capacity" class="col-sm-12 col-form-label">Guest Capacity</label>
+                            <div class="col-sm-12">
+                                <input type="number" name="guest_capacity" id="guest_capacity" value="{{ $getRecord->guest_capacity }}" class="form-control">
                             </div>
                         </div>
                     </div><br>

@@ -47,6 +47,9 @@ class VenueController extends Controller
          $save->description = $req->description;
          $save->price = $req->price;
          $save->address = $req->address;
+         $save->event_type = $req->event_type;
+         $save->ambience = $req->ambience;
+         $save->guest_capacity = $req->guest_capacity;
          $save->user_id = Auth::user()->id;
          $save->save();
 
@@ -56,7 +59,7 @@ class VenueController extends Controller
      // Loads venue edit view
      public function edit($id)
      {
-         $data['getRecord'] = Venue::find($id)->first(); // Fetch user by ID
+         $data['getRecord'] = Venue::find($id); // Fetch user by ID
          return view('panel.vendor.venue.edit', $data);
      }
 
@@ -99,7 +102,9 @@ class VenueController extends Controller
          $venue->description = $req->description;
          $venue->price = $req->price;
          $venue->address = $req->address;
-
+         $venue->event_type = $req->event_type;
+         $venue->ambience = $req->ambience;
+         $venue->guest_capacity = $req->guest_capacity;
          // Save the updated venue
          $venue->save();
 

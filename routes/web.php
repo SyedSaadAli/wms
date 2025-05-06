@@ -8,11 +8,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VendorProfileController;
 
-Route::get('/', function () {
-    return view('home');
-});
+
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+// Survey Route
+Route::post('/survey-submit', [HomeController::class, 'submitSurvey'])->middleware(['auth', 'verified'])->name('survey.submit');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,5 +66,5 @@ Route::group(['middleware' => 'uservendor'], function () {
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/venues/{id?}', [HomeController::class, 'venues'])->name('venues');
 Route::get('/vendors', [HomeController::class, 'vendors'])->name('vendors');
-
+Route::get('/venue/details/{id}', [HomeController::class, 'venueDetails'])->name('venue.details');
 require __DIR__ . '/auth.php';

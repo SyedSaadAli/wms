@@ -15,5 +15,8 @@ class Venue extends Model
         'price',
         'address',
         'user_id',
+        'guest_capacity',
+        'ambience',
+        'event_type'
     ];
 }

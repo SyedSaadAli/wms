@@ -36,6 +36,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $userId = Auth::id();
+
+        $surveyFile = public_path("ai/user_survey_{$userId}.csv");
+        $recommendationFile = public_path("ai/recommended_venues_{$userId}.csv");
+
+        if (file_exists($surveyFile)) {
+            unlink($surveyFile);
+        }
+
+        if (file_exists($recommendationFile)) {
+            unlink($recommendationFile);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

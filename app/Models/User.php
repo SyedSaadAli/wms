@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role_id',
         'is_approved',
         'survey',
+        'event_date',
     ];
 
     /**

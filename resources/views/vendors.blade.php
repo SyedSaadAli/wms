@@ -35,6 +35,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                     @if (Route::has('login'))
                         @auth
+                        <li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a></li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                 @csrf

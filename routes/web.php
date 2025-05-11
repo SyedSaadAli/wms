@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenueController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VendorProfileController;
+use App\Http\Controllers\CoupleController;
 
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
@@ -63,8 +65,21 @@ Route::group(['middleware' => 'uservendor'], function () {
     });
 // });
 
+// Couple Routes
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/couple/dashboard', [CoupleController::class, 'viewCoupleDashboard'])->name('couple.dashboard');
+    Route::get('/couple/profile', [CoupleController::class, 'viewCoupleProfile'])->name('couple.profile.view');
+    Route::post('/couple/profile/update', [CoupleController::class, 'updateCoupleProfile'])->name('couple.profile.update');
+    Route::get('/couple/booking-details', [CoupleController::class, 'viewCoupleBookingDetails'])->name('couple.booking.details');
+    Route::get('/couple/venue-booking/edit/{id}', [CoupleController::class, 'editCoupleVenueBooking'])->name('couple.venue.booking.edit');
+    Route::post('/couple/venue-booking/update/{id}', [CoupleController::class, 'updateCoupleVenueBooking'])->name('couple.venue.booking.update');
+});
+
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/venues/{id?}', [HomeController::class, 'venues'])->name('venues');
 Route::get('/vendors', [HomeController::class, 'vendors'])->name('vendors');
 Route::get('/venue/details/{id}', [HomeController::class, 'venueDetails'])->name('venue.details');
+Route::post('/booking', [BookingController::class, 'store'])->middleware(['auth', 'verified'])->name('bookings.store');
+Route::post('/booking/check-availability', [BookingController::class, 'checkAvailability'])->middleware(['auth', 'verified'])->name('bookings.checkAvailability');
+
 require __DIR__ . '/auth.php';

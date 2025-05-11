@@ -63,7 +63,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                     @if (Route::has('login'))
                         @auth
-
+<li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a></li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                 @csrf
@@ -128,54 +128,67 @@
                 <div>
                     <h4>Check Availability</h4>
                     <form id="availabilityForm">
+                        @csrf
+                        <input type="hidden" name="venue_id" value="{{ $venue->id }}">
                         <div class="mb-3">
                             <label for="checkInDate" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="checkInDate">
+                            <input type="date" class="form-control" id="checkInDate" name="bookingDate" min="{{ date('Y-m-d') }}" required>
                         </div>
                         <button type="submit" class="btn btn-success">Check Availability</button>
                         <p id="availabilityMessage" class="mt-2"></p>
                     </form>
-                    <button type="button" class="btn btn-primary book-button" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
+                </div>
+
+                <div class="book-button">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        Book Now
+                    </button>
                 </div>
             </section>
         </div>
     </div>
 
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingModalLabel">Book Grand Ballroom</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="bookingForm">
-                        <div class="mb-3">
-                            <label for="bookingDate" class="form-label">Booking Date</label>
-                            <input type="date" class="form-control" id="bookingDate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="guestCount" class="form-label">Number of Guests</label>
-                            <input type="number" class="form-control" id="guestCount" min="1" value="1" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="eventTime" class="form-label">Event Time</label>
-                            <input type="time" class="form-control" id="eventTime" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="specialRequests" class="form-label">Special Requests</label>
-                            <textarea class="form-control" id="specialRequests" rows="3"></textarea>
-                        </div>
-                    </form>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingModalLabel">{{ $venue->name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm" action="{{ route('bookings.store') }}" method="POST" data-processing="false">
+                    @csrf
+                        <input type="hidden" id="venue_id" name="venue_id" value={{ $venue->id }} required>
+                    <div class="mb-3">
+                        <label for="bookingDate" class="form-label">Booking Date</label>
+                        <input type="date" min="{{ date('Y-m-d') }}" class="form-control" id="bookingDate" name="bookingDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="guestCount" class="form-label">Number of Guests</label>
+                        <input type="number" class="form-control" id="guestCount" name="guestCount" min="1" value="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventStartTime" class="form-label">Event Start Time</label>
+                        <input type="time" class="form-control" id="eventStartTime" name="eventStartTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventEndTime" class="form-label">Event End Time</label>
+                        <input type="time" class="form-control" id="eventEndTime" name="eventEndTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="specialRequests" name="specialRequests" rows="3"></textarea>
+                    </div>
                     <p id="bookingConfirmation" class="mt-3"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmBooking">Confirm Booking</button>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmBooking">Confirm Booking</button>
             </div>
         </div>
     </div>
+</div>
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Wedding Management System</p>
@@ -183,50 +196,94 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Removed the thumbnail image logic
+        document.addEventListener('DOMContentLoaded', function () {
+    // Check Availability Form
+    const availabilityForm = document.getElementById('availabilityForm');
+    const availabilityMessage = document.getElementById('availabilityMessage');
 
-            document.getElementById('availabilityForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const selectedDate = document.getElementById('checkInDate').value;
-                const availabilityMessage = document.getElementById('availabilityMessage');
-                if (selectedDate) {
-                    // In a real scenario, you would perform an AJAX request to your server
-                    // to check the availability of the "Grand Ballroom" on the selected date.
-                    // For this static example, we'll just provide a mock response.
-                    if (selectedDate === '2025-12-25') {
-                        availabilityMessage.textContent = 'Sorry, this date is already booked.';
+    if (availabilityForm) {
+        availabilityForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Clear previous messages
+            availabilityMessage.textContent = '';
+
+            // Submit the form via AJAX
+            const formData = new FormData(availabilityForm);
+            fetch('{{ route('bookings.checkAvailability') }}', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        availabilityMessage.textContent = data.message;
+                        availabilityMessage.style.color = 'green';
                     } else {
-                        availabilityMessage.textContent = `The venue might be available on ${selectedDate}. Please proceed to book.`;
+                        availabilityMessage.textContent = data.message;
+                        availabilityMessage.style.color = 'red';
                     }
-                } else {
-                    availabilityMessage.textContent = 'Please select a date to check availability.';
-                }
-            });
-
-            document.getElementById('confirmBooking').addEventListener('click', function() {
-                const bookingDate = document.getElementById('bookingDate').value;
-                const guestCount = document.getElementById('guestCount').value;
-                const eventTime = document.getElementById('eventTime').value;
-                const specialRequests = document.getElementById('specialRequests').value;
-                const bookingConfirmation = document.getElementById('bookingConfirmation');
-                const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
-
-                if (bookingDate && guestCount && eventTime) {
-                    // In a real application, you would send this booking data to your server
-                    // to create a new booking record in your database.
-                    bookingConfirmation.textContent = `Booking requested for ${bookingDate} at ${eventTime} with ${guestCount} guests. Special requests: ${specialRequests || 'None'}. (This is a placeholder)`;
-                    // Optionally, you can close the modal after "booking"
-                    setTimeout(() => {
-                        bookingModal.hide();
-                        document.getElementById('bookingForm').reset();
-                        bookingConfirmation.textContent = '';
-                    }, 2000);
-                } else {
-                    bookingConfirmation.textContent = 'Please fill in all the required booking details.';
-                }
-            });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    availabilityMessage.textContent = 'An error occurred. Please try again.';
+                    availabilityMessage.style.color = 'red';
+                });
         });
+    }
+
+    // Booking Form
+    const bookingForm = document.getElementById('bookingForm');
+    const confirmBookingButton = document.getElementById('confirmBooking');
+    const bookingModalElement = document.getElementById('bookingModal');
+    const bookingConfirmation = document.getElementById('bookingConfirmation');
+
+    if (confirmBookingButton && bookingForm) {
+        confirmBookingButton.addEventListener('click', function () {
+            // Prevent multiple submissions
+            if (bookingForm.getAttribute('data-processing') === 'true') {
+                return;
+            }
+
+            // Set the form as processing
+            bookingForm.setAttribute('data-processing', 'true');
+
+            // Clear previous messages
+            bookingConfirmation.textContent = '';
+
+            // Submit the form via AJAX
+            const formData = new FormData(bookingForm);
+            fetch(bookingForm.action, {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        bookingConfirmation.textContent = data.message;
+
+                        // Close the modal after showing the message
+                        setTimeout(() => {
+                            const bookingModal = bootstrap.Modal.getInstance(bookingModalElement);
+                            bookingModal.hide();
+                            bookingForm.reset();
+                            bookingConfirmation.textContent = '';
+                        }, 2000);
+                    } else {
+                        bookingConfirmation.textContent = data.message || 'An error occurred. Please try again.';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    bookingConfirmation.textContent = 'An error occurred. Please try again.';
+                })
+                .finally(() => {
+                    // Reset the processing state
+                    bookingForm.setAttribute('data-processing', 'false');
+                });
+        });
+    }
+});
     </script>
 </body>
 </html>

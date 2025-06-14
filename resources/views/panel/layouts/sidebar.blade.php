@@ -20,7 +20,7 @@
           <i class="bi bi-person"></i>
           <span>Vendors</span>
         </a>
-      </li><!-- End Category Nav -->
+      </li>
       @endif
 
       @if (isset($role) && $role == 2)
@@ -30,7 +30,7 @@
           <i class="bi bi-person"></i>
           <span>Business Profile</span>
         </a>
-      </li><!-- End Sub Category Nav -->
+      </li>
       @endif
 
       @if (isset($role) && $role == 2)
@@ -40,7 +40,13 @@
           <i class="bi bi-person"></i>
           <span>Venues</span>
         </a>
-      </li><!-- End Product Nav -->
+      </li>
+      <li class="nav-item">
+            <a class="nav-link" href="{{ route('vendor.chat.users') }}">
+                <i class="bi bi-chat"></i> Chat
+            </a>
+        </li>
+
       @endif
 
 

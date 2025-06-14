@@ -1,15 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenueController;
+use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\CoupleController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VendorProfileController;
-use App\Http\Controllers\CoupleController;
 
+Broadcast::routes();
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
@@ -62,6 +65,9 @@ Route::group(['middleware' => 'uservendor'], function () {
         Route::post('/panel/vendor/venue/edit/{id}', [VenueController::class, 'update']);
         Route::get('/panel/vendor/venue/delete/{id}', [VenueController::class, 'delete']);
 
+        Route::get('/chat', [ChatController::class, 'users'])->name('vendor.chat.users');
+        Route::get('/chat/{userId}', [ChatController::class, 'chatWithUser'])->name('vendor.chat.with');
+        Route::post('/vendor/chat/send', [ChatController::class, 'sendVendor'])->name('vendor.chat.send');
     });
 // });
 
@@ -73,13 +79,25 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/couple/booking-details', [CoupleController::class, 'viewCoupleBookingDetails'])->name('couple.booking.details');
     Route::get('/couple/venue-booking/edit/{id}', [CoupleController::class, 'editCoupleVenueBooking'])->name('couple.venue.booking.edit');
     Route::post('/couple/venue-booking/update/{id}', [CoupleController::class, 'updateCoupleVenueBooking'])->name('couple.venue.booking.update');
+
+    // chat routes
+    Route::get('/chat/vendors', [ChatController::class, 'showVendors'])->name('chat.vendors');
+    Route::get('/chat/messages/{vendor}', [ChatController::class, 'chatWithVendor'])->name('chat.with.vendor');
+    Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+
 });
 
-Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::get('/home', [HomeController::class, 'home'])->name('homepage');
 Route::get('/venues/{id?}', [HomeController::class, 'venues'])->name('venues');
 Route::get('/vendors', [HomeController::class, 'vendors'])->name('vendors');
 Route::get('/venue/details/{id}', [HomeController::class, 'venueDetails'])->name('venue.details');
 Route::post('/booking', [BookingController::class, 'store'])->middleware(['auth', 'verified'])->name('bookings.store');
 Route::post('/booking/check-availability', [BookingController::class, 'checkAvailability'])->middleware(['auth', 'verified'])->name('bookings.checkAvailability');
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/chat/vendors', [ChatController::class, 'showVendors'])->name('chat.vendors');
+//     Route::get('/chat/messages/{vendor}', [ChatController::class, 'chatWithVendor'])->name('chat.with.vendor');
+//     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+// });
 
 require __DIR__ . '/auth.php';

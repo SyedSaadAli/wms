@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/couple/venue-booking/update/{id}', [CoupleController::class, 'updateCoupleVenueBooking'])->name('couple.venue.booking.update');
 
     // chat routes
-    Route::get('/chat/vendors', [ChatController::class, 'showVendors'])->name('chat.vendors');
+    Route::get('/message', [ChatController::class, 'showVendors'])->name('message');
     Route::get('/chat/messages/{vendor}', [ChatController::class, 'chatWithVendor'])->name('chat.with.vendor');
     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
 

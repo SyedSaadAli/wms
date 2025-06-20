@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Profile;
 use App\Models\SurveyResponse;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,5 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(SurveyResponse::class);
     }
-
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
 }

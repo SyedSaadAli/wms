@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,5 +102,15 @@ class VendorProfileController extends Controller
         $profile->save();
 
         return redirect('panel/vendor/profile')->with('success', 'Business profile successfully updated');
+    }
+
+    public function approvedVendors()
+    {
+        // Get all approved vendors (users with role_id = 2 and is_approved = 1)
+        $vendors = User::where('role_id', 2)
+            ->where('is_approved', 'approved')
+            ->with('profile') // eager load profile relation
+            ->get();
+        return view('panel.admin.vendor.approved_vendors', compact('vendors'));
     }
 }

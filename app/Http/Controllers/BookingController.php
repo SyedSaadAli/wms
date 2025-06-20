@@ -87,4 +87,10 @@ class BookingController extends Controller
             'message' => 'The venue is available on the selected date.',
         ]);
     }
+
+    public function viewAllBookings()
+    {
+        $bookings = Booking::with(['user', 'venue'])->latest()->get();
+        return view('panel.admin.bookings', compact('bookings'));
+    }
 }

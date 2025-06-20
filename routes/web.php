@@ -44,6 +44,9 @@ Route::group(['middleware' => 'useradmin'], function () {
         Route::get('/panel/admin/vendor', [UserController::class, 'list']);
         Route::get('/panel/admin/vendor/approve/{id}', [UserController::class, 'approve']);
         Route::get('/panel/admin/vendor/reject/{id}', [UserController::class, 'reject']);
+
+        Route::get('/panel/admin/vendor/approved-vendors', [VendorProfileController::class, 'approvedVendors'])->name('approved.vendors');
+        Route::get('/panel/admin/bookings', [BookingController::class, 'viewAllBookings'])->name('admin.bookings');
     });
 // });
 
@@ -110,5 +113,6 @@ Route::post('/booking/check-availability', [BookingController::class, 'checkAvai
 //     Route::get('/chat/messages/{vendor}', [ChatController::class, 'chatWithVendor'])->name('chat.with.vendor');
 //     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
 // });
+
 
 require __DIR__ . '/auth.php';

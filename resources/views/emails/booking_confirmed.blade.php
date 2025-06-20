@@ -44,7 +44,6 @@
         <td>Venue Price</td>
         <td><strong>AED {{ number_format($booking->venue->price, 0) }}</strong></td>
     </tr>
-    {{-- Add more rows here if you have extra charges --}}
     <tr>
         <th>Total</th>
         <th>AED {{ number_format($booking->venue->price, 0) }}</th>

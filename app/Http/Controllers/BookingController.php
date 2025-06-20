@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Booking;
+use Illuminate\Http\Request;
+use App\Mail\BookingConfirmed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -50,9 +52,14 @@ class BookingController extends Controller
         $booking->special_requests = $request->specialRequests;
         $booking->save();
 
+        $booking->load('user', 'venue');
+
+        // Send confirmation email
+        Mail::to(Auth::user()->email)->send(new BookingConfirmed($booking));
+
         return response()->json([
             'success' => true,
-            'message' => 'Your Selected Venue Is Booked on ' . $request->bookingDate,
+            'message' => 'Your Selected Venue Is Booked on ' . $request->bookingDate. '. Confirmation email has been sent.',
         ]);
     }
 

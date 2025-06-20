@@ -16,6 +16,11 @@ class Booking extends Model
         'special_requests',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function venue()
     {
         return $this->belongsTo(Venue::class);

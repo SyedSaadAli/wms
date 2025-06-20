@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Vendors - Wedding Management System</title>
+    <title>Wedding Venues - Wedding Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,10 +11,10 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
         }
-        .vendor-card {
+        .venue-card {
             margin-bottom: 20px;
         }
-        .vendor-img {
+        .venue-img {
             height: 200px;
             object-fit: cover;
             border-radius: 8px;
@@ -73,17 +73,17 @@
     </nav>
 
     <div class="container mt-4">
-        <h2>Wedding Vendors</h2>
+        <h2>Wedding Services</h2>
         <div class="row">
-            @foreach ($businessProfile as $value)
+            @foreach ($services as $value)
 
-            <div class="col-md-4 vendor-card">
+            <div class="col-md-4 venue-card">
                 <div class="card">
-                    <img src="{{ asset('profile_images/'.$value->image_name) }}" class="card-img-top vendor-img" alt="Photographer 1">
+                    <img src="{{ asset('service_images/'.$value->image) }}" class="card-img-top venue-img" alt="Venue 1">
                     <div class="card-body">
                         <h5 class="card-title">{{ $value->name }}</h5>
                         <p class="card-text">{{ \Illuminate\Support\Str::limit($value->description, 100, '...') }}</p>
-                        <a href="{{ url('/venues/'.$value->id) }}" class="btn btn-primary">View Venues</a>
+                        <a href="{{ route('service.details',$value->id) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

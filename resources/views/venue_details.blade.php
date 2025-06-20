@@ -60,6 +60,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/home') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/venues') }}">Venues</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                     @if (Route::has('login'))
                         @auth

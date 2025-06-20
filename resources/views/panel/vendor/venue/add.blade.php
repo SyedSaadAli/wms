@@ -25,32 +25,32 @@
                                 <div class="col-md-6">
                                     <label for="name" class="col-sm-12 col-form-label">Name</label>
                                     <div class="col-sm-12">
-                                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control">
+                                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="description" class="col-sm-12 col-form-label">Description</label>
                                     <div class="col-sm-12">
-                                        <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+                                        <textarea name="description" id="description" class="form-control" required>{{ old('description') }}</textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="price" class="col-sm-12 col-form-label">Price</label>
                                     <div class="col-sm-12">
-                                        <input type="number" name="price" id="price" value="{{ old('price') }}" class="form-control">
+                                        <input type="number" min="1" name="price" id="price" value="{{ old('price') }}" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="address" class="col-sm-12 col-form-label">Address</label>
                                     <div class="col-sm-12">
-                                        <textarea name="address" id="address" class="form-control">{{ old('address') }}</textarea>
+                                        <textarea name="address" id="address" class="form-control" required>{{ old('address') }}</textarea>
                                     </div>
                                 </div>
                                 <!-- New Fields -->
                                 <div class="col-md-6">
                                     <label for="event_type" class="col-sm-12 col-form-label">Event Type</label>
                                     <div class="col-sm-12">
-                                        <select name="event_type" id="event_type" class="form-control">
+                                        <select name="event_type" id="event_type" class="form-control" required>
                                             <option value="Birthday Party" {{ old('event_type') == 'Birthday Party' ? 'selected' : '' }}>Birthday Party</option>
                                             <option value="Wedding" {{ old('event_type') == 'Wedding' ? 'selected' : '' }}>Wedding</option>
                                             <option value="Corporate Event" {{ old('event_type') == 'Corporate Event' ? 'selected' : '' }}>Corporate Event</option>
@@ -62,7 +62,7 @@
                                 <div class="col-md-6">
                                     <label for="ambience" class="col-sm-12 col-form-label">Ambience</label>
                                     <div class="col-sm-12">
-                                        <select name="ambience" id="ambience" class="form-control">
+                                        <select name="ambience" id="ambience" class="form-control" required>
                                             <option value="Luxury" {{ old('ambience') == 'Luxury' ? 'selected' : '' }}>Luxury</option>
                                             <option value="Classic" {{ old('ambience') == 'Classic' ? 'selected' : '' }}>Classic</option>
                                             <option value="Elegant" {{ old('ambience') == 'Elegant' ? 'selected' : '' }}>Elegant</option>
@@ -72,7 +72,7 @@
                                 <div class="col-md-6">
                                     <label for="guest_capacity" class="col-sm-12 col-form-label">Guest Capacity</label>
                                     <div class="col-sm-12">
-                                        <input type="number" name="guest_capacity" id="guest_capacity" value="{{ old('guest_capacity') }}" class="form-control">
+                                        <input type="number" name="guest_capacity" id="guest_capacity" value="{{ old('guest_capacity') }}" class="form-control" required>
                                     </div>
                                 </div>
                             </div><br>

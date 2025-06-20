@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Venue;
 use App\Models\Profile;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Models\SurveyResponse;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,23 @@ class HomeController extends Controller
         }
 
         return view('home', compact('showSurvey'));
+    }
+
+    /**
+     * Display the services page.
+     */
+    public function services()
+    {
+        $data['services'] = Service::all();
+        return view('services', $data);
+    }
+    public function serviceDetails($id){
+        $service = Service::find($id);
+        if (!$service) {
+            return redirect()->route('home')->with('error', 'Service not found.');
+        }
+        $data['service'] = $service;
+        return view('service_details',$data);
     }
 
     /**

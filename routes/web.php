@@ -98,8 +98,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 Route::get('/home', [HomeController::class, 'home'])->name('homepage');
 Route::get('/venues/{id?}', [HomeController::class, 'venues'])->name('venues');
+Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/vendors', [HomeController::class, 'vendors'])->name('vendors');
 Route::get('/venue/details/{id}', [HomeController::class, 'venueDetails'])->name('venue.details');
+Route::get('/service/details/{id}', [HomeController::class, 'serviceDetails'])->name('service.details');
 Route::post('/booking', [BookingController::class, 'store'])->middleware(['auth', 'verified'])->name('bookings.store');
 Route::post('/booking/check-availability', [BookingController::class, 'checkAvailability'])->middleware(['auth', 'verified'])->name('bookings.checkAvailability');
 

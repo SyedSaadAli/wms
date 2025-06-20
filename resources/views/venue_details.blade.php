@@ -119,7 +119,7 @@
                 </div>
                 <div class="detail-item">
                     <i class="fas fa-dollar-sign detail-icon"></i>
-                    <strong>Price Starting From:</strong> <span id="venuePrice"> ${{ number_format($venue->price, 0) }}</span>
+                    <strong>Price Starting From:</strong> <span id="venuePrice"> AED {{ number_format($venue->price, 0) }}</span>
                 </div>
                 <div class="detail-item">
                     <i class="far fa-calendar-alt detail-icon"></i>

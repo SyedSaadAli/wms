@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\CoupleController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VendorProfileController;
 
@@ -64,6 +65,14 @@ Route::group(['middleware' => 'uservendor'], function () {
         Route::get('/panel/vendor/venue/edit/{id}', [VenueController::class, 'edit']);
         Route::post('/panel/vendor/venue/edit/{id}', [VenueController::class, 'update']);
         Route::get('/panel/vendor/venue/delete/{id}', [VenueController::class, 'delete']);
+
+        //Service Routes
+        Route::get('/panel/vendor/service', [ServiceController::class, 'list']);
+        Route::get('/panel/vendor/service/add', [ServiceController::class, 'add']);
+        Route::post('/panel/vendor/service/add', [ServiceController::class, 'insert']);
+        Route::get('/panel/vendor/service/edit/{id}', [ServiceController::class, 'edit']);
+        Route::post('/panel/vendor/service/edit/{id}', [ServiceController::class, 'update']);
+        Route::get('/panel/vendor/service/delete/{id}', [ServiceController::class, 'delete']);
 
         Route::get('/chat', [ChatController::class, 'users'])->name('vendor.chat.users');
         Route::get('/chat/{userId}', [ChatController::class, 'chatWithUser'])->name('vendor.chat.with');

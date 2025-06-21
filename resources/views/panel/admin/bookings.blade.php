@@ -1,7 +1,7 @@
 @extends('../../panel.layouts.app')
 @section('content')
     <div class="pagetitle">
-        <h1>Vendors</h1>
+        <h1>Bookings</h1>
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5 class="card-title">Vendors List</h5>
+                                <h5 class="card-title">All Bookings</h5>
                             </div>
 
                         </div>

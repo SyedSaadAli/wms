@@ -39,6 +39,7 @@
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('couple.profile.view') }}">Profile</a></li>
                     <li><a href="{{ route('couple.booking.details') }}">Booking Details</a></li>
+                    <li><a href="{{ route('couple.order.history') }}">Order History</a></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

@@ -6,14 +6,13 @@
         @php
             $role = Auth::user()->role_id;
         @endphp
-
+        <li class="nav-item">
+            <a class="nav-link @if (Request::segment(1) != 'dashboard') collapsed @endif " href="{{ url('/dashboard') }}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
         @if (isset($role) && $role == 1)
-            <li class="nav-item">
-                <a class="nav-link @if (Request::segment(1) != 'dashboard') collapsed @endif " href="{{ url('/dashboard') }}">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
             <li class="nav-item">
                 <a class="nav-link @if (Request::segment(3) != 'vendor') collapsed @endif "
                     href="{{ url('panel/admin/vendor') }}">
@@ -29,10 +28,16 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if (Request::segment(4) == 'bookings') active @endif"
+                <a class="nav-link @if (Request::segment(3) == 'bookings') active @endif"
                     href="{{ route('admin.bookings') }}">
                     <i class="bi bi-calendar-check"></i>
                     <span>All Bookings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (Request::segment(3) == 'orders') active @endif" href="{{ route('admin.orders') }}">
+                    <i class="bi bi-bag"></i>
+                    <span>All Orders</span>
                 </a>
             </li>
         @endif
@@ -66,6 +71,13 @@
                 <a class="nav-link @if (Request::segment(1) != 'chat') collapsed @endif"
                     href="{{ route('vendor.chat.users') }}">
                     <i class="bi bi-chat"></i> Chat
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (Request::segment(3) == 'orders') active @endif"
+                    href="{{ route('vendor.orders') }}">
+                    <i class="bi bi-bag"></i>
+                    <span>Orders</span>
                 </a>
             </li>
         @endif

@@ -71,4 +71,38 @@ class OrderController extends Controller
 
         return view('orders', compact('order'));
     }
+
+    public function showOrdersToAdmin()
+    {
+        $orders = Order::with(['user', 'items.service'])->latest()->get();
+        return view('panel.admin.orders', compact('orders'));
+    }
+
+    public function coupleOrderHistory()
+    {
+        $orders = Order::with('items.service')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('panel.couple.couple_order_history', compact('orders'));
+    }
+
+    public function vendorOrders()
+    {
+        $vendorId = Auth::id();
+
+        // Get all order IDs that have at least one item for this vendor
+        $orderIds = OrderItem::whereHas('service', function($q) use ($vendorId) {
+            $q->where('user_id', $vendorId);
+        })->pluck('order_id')->unique();
+
+        // Get those orders with user and items (eager load service for items)
+        $orders = Order::with(['user', 'items.service'])
+            ->whereIn('id', $orderIds)
+            ->latest()
+            ->get();
+
+        return view('panel.vendor.order.index', compact('orders'));
+    }
 }

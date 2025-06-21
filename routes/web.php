@@ -50,6 +50,9 @@ Route::group(['middleware' => 'useradmin'], function () {
 
         Route::get('/panel/admin/vendor/approved-vendors', [VendorProfileController::class, 'approvedVendors'])->name('approved.vendors');
         Route::get('/panel/admin/bookings', [BookingController::class, 'viewAllBookings'])->name('admin.bookings');
+
+        Route::get('/panel/admin/orders', [OrderController::class, 'showOrdersToAdmin'])->name('admin.orders');
+
     });
 // });
 
@@ -83,6 +86,9 @@ Route::group(['middleware' => 'uservendor'], function () {
         Route::get('/chat', [ChatController::class, 'users'])->name('vendor.chat.users');
         Route::get('/chat/{userId}', [ChatController::class, 'chatWithUser'])->name('vendor.chat.with');
         Route::post('/vendor/chat/send', [ChatController::class, 'sendVendor'])->name('vendor.chat.send');
+
+        // Order route
+        Route::get('/panel/vendor/orders', [OrderController::class, 'vendorOrders'])->name('vendor.orders');
     });
 // });
 
@@ -110,6 +116,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+    // Couple Order History
+    Route::get('/couple/order-history', [OrderController::class, 'coupleOrderHistory'])->name('couple.order.history');
 
 });
 

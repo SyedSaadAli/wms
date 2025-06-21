@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +12,37 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
         }
+
         .venue-card {
             margin-bottom: 20px;
         }
+
         .venue-img {
             height: 200px;
             object-fit: cover;
             border-radius: 8px;
         }
+
+        .card-text {
+            height: 48px;
+            /* Adjust as needed for 2-3 lines */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* Show only 2 lines */
+            -webkit-box-orient: vertical;
+            white-space: normal;
+        }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">Wedding Management System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -36,57 +53,76 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                     @if (Route::has('login'))
                         @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/message') }}">
-                                <i class="fas fa-comments"></i> Chat
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a></li>
-                        <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="nav-link">
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/message') }}">
+                                    <i class="fas fa-comments"></i> Chat
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Cart
+                                    @if(isset($cartCount) && $cartCount > 0)
+                                        <span class="badge bg-danger">{{ $cartCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="nav-link">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
                         @else
-                            <a
-                                href="{{ route('login') }}"
-                                class="nav-link"
-                            >
+                            <a href="{{ route('login') }}" class="nav-link">
                                 Log in
                             </a>
 
                             @if (Route::has('register'))
-                                <a
-                                    href="{{ route('register') }}"
-                                    class="nav-link">
+                                <a href="{{ route('register') }}" class="nav-link">
                                     Register
                                 </a>
                             @endif
                         @endauth
-                @endif
+                    @endif
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <h2>Wedding Services</h2>
         <div class="row">
             @foreach ($services as $value)
-
-            <div class="col-md-4 venue-card">
-                <div class="card">
-                    <img src="{{ asset('service_images/'.$value->image) }}" class="card-img-top venue-img" alt="Venue 1">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $value->name }}</h5>
-                        <p class="card-text">{{ \Illuminate\Support\Str::limit($value->description, 100, '...') }}</p>
-                        <a href="{{ route('service.details',$value->id) }}" class="btn btn-primary">View Details</a>
+                <div class="col-md-4 venue-card">
+                    <div class="card">
+                        <img src="{{ asset('service_images/' . $value->image) }}" class="card-img-top venue-img"
+                            alt="Venue 1">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $value->name }}</h5>
+                            <p class="card-text">{{ \Illuminate\Support\Str::limit($value->description, 100, '...') }}
+                            </p>
+                            <a href="{{ route('service.details', $value->id) }}" class="btn btn-primary">View
+                                Details</a>
+                            <form method="POST" action="{{ route('cart.add', $value->id) }}">
+                                @csrf
+                                <button type="submit" class="btn btn-success mt-2">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
             @endforeach
 
         </div>
@@ -94,4 +130,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

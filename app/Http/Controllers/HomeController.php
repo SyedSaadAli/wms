@@ -10,6 +10,7 @@ use App\Models\SurveyResponse;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Models\Cart;
 
 
 class HomeController extends Controller
@@ -20,13 +21,13 @@ class HomeController extends Controller
     public function home()
     {
         $user = Auth::user();
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
         if (isset($user) && !$user->survey) {
             $showSurvey = true;
         } else {
             $showSurvey = false;
         }
-
-        return view('home', compact('showSurvey'));
+        return view('home', compact('showSurvey', 'cartCount'));
     }
 
     /**
@@ -34,16 +35,14 @@ class HomeController extends Controller
      */
     public function services()
     {
-        $data['services'] = Service::all();
-        return view('services', $data);
+        $services = Service::all();
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
+        return view('services', compact('services', 'cartCount'));
     }
     public function serviceDetails($id){
-        $service = Service::find($id);
-        if (!$service) {
-            return redirect()->route('home')->with('error', 'Service not found.');
-        }
-        $data['service'] = $service;
-        return view('service_details',$data);
+        $service = Service::findOrFail($id);
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
+        return view('service_details', compact('service', 'cartCount'));
     }
 
     /**
@@ -51,10 +50,12 @@ class HomeController extends Controller
      */
     public function venues($id = null)
     {
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
         // If vendor ID is present, show only that vendor's venues
         if ($id) {
             $profile = Profile::find($id);
             $data['venues'] = Venue::where('user_id', $profile->user_id)->get();
+            $data['cartCount'] = $cartCount;
             return view('venues', $data);
         }
 
@@ -64,6 +65,7 @@ class HomeController extends Controller
         // Not logged in or survey not filled: show all venues
         if (!$user || !$user->survey) {
             $data['venues'] = Venue::all();
+            $data['cartCount'] = $cartCount;
             return view('venues', $data);
         }
 
@@ -97,16 +99,21 @@ class HomeController extends Controller
             $data['venues'] = Venue::all();
         }
 
+        // Always add cartCount before returning the view
+        $data['cartCount'] = $cartCount;
+
         return view('venues', $data);
     }
 
     public function venueDetails($id){
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
         $venue = Venue::find($id);
         if (!$venue) {
             return redirect()->route('home')->with('error', 'Venue not found.');
         }
         $data['venue'] = $venue;
-        return view('venue_details',$data);
+        $data['cartCount'] = $cartCount;
+        return view('venue_details', $data);
     }
 
     /**
@@ -114,7 +121,9 @@ class HomeController extends Controller
      */
     public function vendors()
     {
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
         $data['businessProfile'] = Profile::all();
+        $data['cartCount'] = $cartCount;
         return view('vendors', $data);
     }
 
@@ -156,7 +165,7 @@ class HomeController extends Controller
     {
         $csvPath = public_path('ai/venues.csv');
         $lastExported = file_exists($csvPath) ? filemtime($csvPath) : 0;
-        $lastVenueUpdate = \App\Models\Venue::max('updated_at')->timestamp;
+        $lastVenueUpdate = Venue::max('updated_at')->timestamp;
 
         if ($lastVenueUpdate > $lastExported) {
             $this->exportVenues();

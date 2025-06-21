@@ -69,6 +69,15 @@
                                 <i class="fas fa-comments"></i> Chat
                             </a>
                         </li>
+                         <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Cart
+                                    @if(isset($cartCount) && $cartCount > 0)
+                                        <span class="badge bg-danger">{{ $cartCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
 <li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a></li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" style="display: inline;">

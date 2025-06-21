@@ -24,7 +24,7 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
         <!-- Role -->
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             <x-input-label for="role_id" :value="__('Role')" />
             <select id="role_id" name="role_id" class="block mt-1 w-full">
                 <option value="3">User</option>
@@ -32,7 +32,7 @@
                 <option value="1">Admin</option>
             </select>
             <x-input-error :messages="$errors->get('role_id')" class="mt-2" />
-        </div>
+        </div> --}}
 
         <!-- Remember Me -->
         <div class="block mt-4">

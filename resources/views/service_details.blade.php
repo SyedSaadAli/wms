@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,48 +13,58 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
         }
+
         .venue-detail-container {
             display: flex;
             flex-wrap: wrap;
             padding: 20px;
         }
+
         .venue-images-section {
             flex: 0 0 50%;
             padding-right: 20px;
         }
+
         .venue-image-main {
             width: 100%;
             height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
             object-fit: cover;
-            max-height: 500px; /* Increased max-height for a single image */
+            max-height: 500px;
+            /* Increased max-height for a single image */
         }
+
         .venue-details-section {
             flex: 0 0 50%;
             padding-left: 20px;
         }
+
         .detail-item {
             margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
+
         .detail-icon {
             margin-right: 10px;
             color: #007bff;
             font-size: 1.2em;
         }
+
         .book-button {
             margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Wedding Management System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -64,47 +75,60 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                     @if (Route::has('login'))
                         @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/message') }}">
-                                <i class="fas fa-comments"></i> Chat
-                            </a>
-                        </li>
-<li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a></li>
-                        <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="nav-link">
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/message') }}">
+                                    <i class="fas fa-comments"></i> Chat
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Cart
+                                    @if(isset($cartCount) && $cartCount > 0)
+                                        <span class="badge bg-danger">{{ $cartCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/couple/dashboard') }}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="nav-link">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
                         @else
-                            <a
-                                href="{{ route('login') }}"
-                                class="nav-link"
-                            >
+                            <a href="{{ route('login') }}" class="nav-link">
                                 Log in
                             </a>
 
                             @if (Route::has('register'))
-                                <a
-                                    href="{{ route('register') }}"
-                                    class="nav-link">
+                                <a href="{{ route('register') }}" class="nav-link">
                                     Register
                                 </a>
                             @endif
                         @endauth
-                @endif
+                    @endif
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="venue-detail-container">
             <section class="venue-images-section">
-                <img id="mainVenueImage" src="{{ asset('service_images/'.$service->image) }}" alt="Grand Ballroom" class="venue-image-main">
-                </section>
+                <img id="mainVenueImage" src="{{ asset('service_images/' . $service->image) }}" alt="Grand Ballroom"
+                    class="venue-image-main">
+            </section>
 
             <section class="venue-details-section">
                 <h2 id="venueName">{{ $service->name }}</h2>
@@ -118,10 +142,16 @@
                     <i class="fas fa-dollar-sign detail-icon"></i>
                     <strong>Price:</strong> <span id="venuePrice"> AED {{ number_format($service->price, 0) }}</span>
                 </div>
+                <form method="POST" action="{{ route('cart.add', $service->id) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-success book-button">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </form>
             </section>
         </div>
     </div>
-</div>
+    </div>
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Wedding Management System</p>
@@ -130,4 +160,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

@@ -1,9 +1,12 @@
 <?php
 
+// use routes;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\CoupleController;
@@ -96,6 +99,17 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/message', [ChatController::class, 'showVendors'])->name('message');
     Route::get('/chat/messages/{vendor}', [ChatController::class, 'chatWithVendor'])->name('chat.with.vendor');
     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+
+    // Cart routes
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{service}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
+
+    // Order routes
+    Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 });
 

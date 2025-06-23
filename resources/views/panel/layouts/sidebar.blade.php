@@ -80,6 +80,13 @@
                     <span>Orders</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if (Request::segment(3) == 'bookings') active @endif"
+                    href="{{ route('vendor.bookings') }}">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+            </li>
         @endif
 
 

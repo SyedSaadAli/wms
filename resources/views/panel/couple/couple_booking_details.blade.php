@@ -81,6 +81,20 @@
                 </ul>
             </nav>
             <main class="col-md-9 content">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 <h2>Booking Details</h2>
 
                 @forelse ($bookings as $booking)
@@ -105,8 +119,25 @@
                                     <p><strong>Guest Count:</strong> {{ $booking->guest_count }}</p>
                                     <p><strong>Special Requests:</strong> {{ $booking->special_requests ?? 'None' }}
                                     </p>
-                                    <p><strong>Status:</strong> <span class="badge bg-success">Confirmed</span></p>
-                                    <a href="{{ route('couple.venue.booking.edit', ['id' => $booking->id]) }}" class="btn btn-primary mt-2">Edit Venue Booking</a>
+                                    <p>
+                                        <strong>Status:</strong>
+                                        @if($booking->status === 'confirmed')
+                                            <span class="badge bg-success">Confirmed</span>
+                                        @elseif($booking->status === 'cancelled')
+                                            <span class="badge bg-danger">Cancelled</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ ucfirst($booking->status) }}</span>
+                                        @endif
+                                    </p>
+
+                                    @if($booking->status === 'confirmed')
+                                        <form method="POST" action="{{ route('couple.booking.cancel', $booking->id) }}" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger mt-2" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Booking</button>
+                                        </form>
+                                    <a href="{{ route('couple.venue.booking.edit', ['id' => $booking->id]) }}" class="btn btn-primary mt-2 ms-2">Edit Venue Booking</a>
+
+                                    @endif
                                 </div>
                             </div>
                         </div>

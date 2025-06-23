@@ -33,10 +33,19 @@ class HomeController extends Controller
     /**
      * Display the services page.
      */
-    public function services()
+    public function services($id = null)
     {
-        $services = Service::all();
         $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->count() : 0;
+
+        // If vendor ID is present, show only that vendor's services
+        if ($id) {
+            $profile = Profile::findOrFail($id);
+            $services = Service::where('user_id', $profile->user_id)->get();
+            return view('services', compact('services', 'cartCount', 'profile'));
+        }
+
+        // Otherwise, show all services
+        $services = Service::all();
         return view('services', compact('services', 'cartCount'));
     }
     public function serviceDetails($id){

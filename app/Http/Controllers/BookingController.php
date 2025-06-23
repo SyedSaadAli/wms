@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Mail\BookingConfirmed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Venue;
 
 class BookingController extends Controller
 {
@@ -92,5 +93,38 @@ class BookingController extends Controller
     {
         $bookings = Booking::with(['user', 'venue'])->latest()->get();
         return view('panel.admin.bookings', compact('bookings'));
+    }
+
+    public function cancel($id)
+    {
+        $booking = Booking::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Prevent cancellation if the booking date is in the past
+        if (\Carbon\Carbon::parse($booking->booking_date)->isPast()) {
+            return redirect()->back()->with('error', 'You cannot cancel a booking for a past date.');
+        }
+
+        $booking->status = 'cancelled';
+        $booking->save();
+
+        return redirect()->back()->with('success', 'Booking cancelled successfully.');
+    }
+
+    public function vendorBookings()
+    {
+        $vendorId = Auth::id();
+
+        // Get all venue IDs owned by this vendor
+        $venueIds = Venue::where('user_id', $vendorId)->pluck('id');
+
+        // Get bookings for these venues, eager load user and venue
+        $bookings = Booking::with(['user', 'venue'])
+            ->whereIn('venue_id', $venueIds)
+            ->latest()
+            ->get();
+
+        return view('panel.vendor.booking.index', compact('bookings'));
     }
 }

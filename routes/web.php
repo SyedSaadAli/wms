@@ -89,6 +89,9 @@ Route::group(['middleware' => 'uservendor'], function () {
 
         // Order route
         Route::get('/panel/vendor/orders', [OrderController::class, 'vendorOrders'])->name('vendor.orders');
+        // vendor bookings route
+        Route::get('/panel/vendor/bookings', [BookingController::class, 'vendorBookings'])->name('vendor.bookings');
+
     });
 // });
 
@@ -120,11 +123,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Couple Order History
     Route::get('/couple/order-history', [OrderController::class, 'coupleOrderHistory'])->name('couple.order.history');
 
+    // Booking cancel route
+    Route::post('/couple/booking/{id}/cancel', [BookingController::class, 'cancel'])->name('couple.booking.cancel');
+
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('homepage');
 Route::get('/venues/{id?}', [HomeController::class, 'venues'])->name('venues');
-Route::get('/services', [HomeController::class, 'services'])->name('services');
+Route::get('/services/{id?}', [HomeController::class, 'services'])->name('services');
 Route::get('/vendors', [HomeController::class, 'vendors'])->name('vendors');
 Route::get('/venue/details/{id}', [HomeController::class, 'venueDetails'])->name('venue.details');
 Route::get('/service/details/{id}', [HomeController::class, 'serviceDetails'])->name('service.details');
